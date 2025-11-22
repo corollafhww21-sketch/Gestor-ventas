@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gestor de ventas y gastos operativos">
+    <meta name="theme-color" content="#4F46E5">
+    <title>Gestor de Ventas</title>
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkdlc3RvciBkZSBWZW50YXMiLAogICJzaG9ydF9uYW1lIjogIlZlbnRhcyIsCiAgImRlc2NyaXB0aW9uIjogIkdlc3RvciBkZSB2ZW50YXMgeSBnYXN0b3Mgb3BlcmF0aXZvcyIsCiAgInN0YXJ0X3VybCI6ICIuLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI2ZmZmZmZiIsCiAgInRoZW1lX2NvbG9yIjogIiM0RjQ2RTUiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lJSGRwWkhSb1BTSXhPVElpSUdobGFXZG9kRDBpTVRreUlqNDhjbVZqZENCM2FXUjBhRDBpTVRreUlpQm9aV2xuYUhROUlqRTVNaUlnWm1sc2JEMGlJelEzTkRaRk5TSXZQanh3WVhSb0lHUTlJazB4TURBZ01UQTBRVEUwSURFd05DQXBJREV3TkNBM01pQXhNRFFnTkRBZ01UQTBJRFE0UTNZMUxqUWdORGdnTkRnZ05USXVOU0EwT0NBMU9FRXhOQ0F4TkNBd0lEQWdNQ0EwT0NBM01rTTBPQ0EzTnk0MUlEUTRMamNnT0RRZ05USWdPRFFnTlRoYklEUTRMakFnTURBZ09Ea2dPREFnT0RrZ01USTRRVEUwSURFMElEQWdNQ0F3SURnNUlERXpObU14TGpRZ01DSXRNSUE1TGpZdE9EUWdPUzQyWnkJtSU5HYy5zaVJ0MTRoT0MFEeSBb2N1Z2RhSEdWS1BqMXRFdFRUdWZZbEZGb2FxTmFpRlY4SlVyT09OZSPHaWYQT1bPBBBBWPT09Vb3BnbGN3Vd0JkxubExSWGRWY1VWNExUVnBVUT09IiwKICAgICAgInNpemVzIjogIjE5MngxOTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lJSGRwWkhSb1BTSTFNVElpSUdobGFXZG9kRDBpTlRFeUlqNDhjbVZqZENCM2FXUjBhRDBpTlRFeUlpQm9aV2xuYUhROUlqVXhNaUlnWm1sc2JEMGlJelEzTkRaRk5TSXZQanh3WVhSb0lHUTlJazB5TlRnZ01qYzJRVEUwSURFMElEQWdNQ0F4SURFMElERTVNa014TkNBeE9USWdNVEFnTVRrNElERXdJREl3T0VzMU1USkROaGY2SURJd09DQXhNQ0F5TURnZ01UUWdNakE0UVRFMElERTBJREFnTUNBeElERTBJREU1TWtNeE5DQXhPVElnTVRBZ01UazRJREV3SURJd09FTXlOemd1TmlBMk1DNDJJREkzT0M0MklEWXdJREkyTUNBeE5EQXVOaUF5TmpBZ01qUXdRekkyTUNBeU16a3VOQ0F5TmpBZ01qTTNMallnTWpZd0lESXpObU15TkRBZ01qTTFJREl3TmlBeU1qWWdNamMySURJd05pQXlNamhtTFRVeExqTWlJSE4wY205clpUMGlJekl5TWpJeU1pSWdjM1J5YjJ0bExYZHBaSFJvUFNJeU9TSXZQand2YzNablBnPT0iLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIj48cmVjdCB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgZmlsbD0iIzQ3NDZFNSIvPjxwYXRoIGQ9Ik0xMDAgMTA0QTE0IDE0IDAgMSAwIDEwNCA3MiAxMDQgNDAgMTA0IDQ4QzEwNCA1Mi41IDQ4IDU4IDQ4IDU4QTE0IDE0IDAgMCAwIDQ4IDcyQzQ4IDc3LjUgNDguNyA4NCA1MiA4NCA1OGIgNDguMCA4OSA4MCA4OSAxMjhBMTQgMTQgMCAwIDAgODkgMTM2YzEuNCAwIDMgOS42LTg0IDkuNnoiIGZpbGw9IiNmZmYiLz48L3N2Zz4=">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #EFF6FF 0%, #E0E7FF 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        h1 {
+            font-size: 28px;
+            color: #1F2937;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            color: #6B7280;
+            font-size: 14px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .stat-label {
+            color: #6B7280;
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #4F46E5;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #4338CA;
+        }
+        
+        .btn-success {
+            background: #10B981;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: #EF4444;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #9CA3AF;
+            color: white;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1F2937;
+        }
+        
+        .form {
+            background: #F9FAFB;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        
+        .input:focus {
+            outline: none;
+            border-color: #4F46E5;
+        }
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        
+        .list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .list-item {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 2px solid;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 12px;
+            background: white;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .text-sm {
+            font-size: 14px;
+        }
+        
+        .text-xs {
+            font-size: 12px;
+        }
+        
+        .mb-2 {
+            margin-bottom: 8px;
+        }
+        
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app"></div>
+
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:application/javascript;base64,' + btoa(`
+                const CACHE_NAME = 'ventas-v1';
+                self.addEventListener('install', (e) => {
+                    e.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(['/'])));
+                });
+                self.addEventListener('fetch', (e) => {
+                    e.respondWith(caches.match(e.request).then(response => response || fetch(e.request)));
+                });
+            `));
+        }
+
+        // App State
+        let state = {
+            products: [],
+            sales: [],
+            expenses: [],
+            viewPeriod: 'day',
+            selectedDate: new Date().toISOString().split('T')[0],
+            startDate: '',
+            endDate: '',
+            showProductForm: false,
+            showSaleForm: false,
+            showExpenseForm: false,
+            editingProduct: null,
+            productForm: { name: '', costPrice: '', normalPrice: '', valePrice: '', preferentialPrice: '' },
+            saleForm: { productId: '', quantity: '', priceType: 'normal', date: new Date().toISOString().split('T')[0] },
+            expenseForm: { type: 'truck_rent', amount: '', description: '', date: new Date().toISOString().split('T')[0] }
+        };
+
+        // Load data from localStorage
+        function loadData() {
+            const products = localStorage.getItem('products');
+            const sales = localStorage.getItem('sales');
+            const expenses = localStorage.getItem('expenses');
+            
+            if (products) state.products = JSON.parse(products);
+            if (sales) state.sales = JSON.parse(sales);
+            if (expenses) state.expenses = JSON.parse(expenses);
+        }
+
+        function saveProducts() {
+            localStorage.setItem('products', JSON.stringify(state.products));
+        }
+
+        function saveSales() {
+            localStorage.setItem('sales', JSON.stringify(state.sales));
+        }
+
+        function saveExpenses() {
+            localStorage.setItem('expenses', JSON.stringify(state.expenses));
+        }
+
+        // Filters
+        function getFilteredSales() {
+            return state.sales.filter(sale => {
+                const saleDate = new Date(sale.date);
+                
+                if (state.viewPeriod === 'day') {
+                    const compareDate = new Date(state.selectedDate);
+                    return saleDate.toDateString() === compareDate.toDateString();
+                } else if (state.viewPeriod === 'week') {
+                    const weekAgo = new Date(state.selectedDate);
+                    weekAgo.setDate(weekAgo.getDate() - 7);
+                    const compareDate = new Date(state.selectedDate);
+                    return saleDate >= weekAgo && saleDate <= compareDate;
+                } else if (state.viewPeriod === 'month') {
+                    const compareDate = new Date(state.selectedDate);
+                    return saleDate.getMonth() === compareDate.getMonth() && 
+                           saleDate.getFullYear() === compareDate.getFullYear();
+                } else if (state.viewPeriod === 'custom') {
+                    if (!state.startDate || !state.endDate) return true;
+                    const start = new Date(state.startDate);
+                    const end = new Date(state.endDate);
+                    return saleDate >= start && saleDate <= end;
+                }
+                return true;
+            });
+        }
+
+        function getFilteredExpenses() {
+            return state.expenses.filter(expense => {
+                const expenseDate = new Date(expense.date);
+                
+                if (state.viewPeriod === 'day') {
+                    const compareDate = new Date(state.selectedDate);
+                    return expenseDate.toDateString() === compareDate.toDateString();
+                } else if (state.viewPeriod === 'week') {
+                    const weekAgo = new Date(state.selectedDate);
+                    weekAgo.setDate(weekAgo.getDate() - 7);
+                    const compareDate = new Date(state.selectedDate);
+                    return expenseDate >= weekAgo && expenseDate <= compareDate;
+                } else if (state.viewPeriod === 'month') {
+                    const compareDate = new Date(state.selectedDate);
+                    return expenseDate.getMonth() === compareDate.getMonth() && 
+                           expenseDate.getFullYear() === compareDate.getFullYear();
+                } else if (state.viewPeriod === 'custom') {
+                    if (!state.startDate || !state.endDate) return true;
+                    const start = new Date(state.startDate);
+                    const end = new Date(state.endDate);
+                    return expenseDate >= start && expenseDate <= end;
+                }
+                return true;
+            });
+        }
+
+        function calculateTotals() {
+            const filtered = getFilteredSales();
+            const filteredExpenses = getFilteredExpenses();
+            
+            const salesTotals = filtered.reduce((acc, sale) => ({
+                totalSales: acc.totalSales + sale.totalSale,
+                totalCosts: acc.totalCosts + sale.totalCost,
+                totalProfit: acc.totalProfit + sale.profit
+            }), { totalSales: 0, totalCosts: 0, totalProfit: 0 });
+
+            const totalExpenses = filteredExpenses.reduce((sum, exp) => sum + exp.amount, 0);
+            const netProfit = salesTotals.totalProfit - totalExpenses;
+
+            return { ...salesTotals, totalExpenses, netProfit };
+        }
+
+        function calculateProfitByType() {
+            const filtered = getFilteredSales();
+            return {
+                normal: filtered.filter(s => s.priceType === 'normal').reduce((sum, s) => sum + s.profit, 0),
+                vale: filtered.filter(s => s.priceType === 'vale').reduce((sum, s) => sum + s.profit, 0),
+                preferential: filtered.filter(s => s.priceType === 'preferential').reduce((sum, s) => sum + s.profit, 0)
+            };
+        }
+
+        // Product actions
+        function addProduct() {
+            const { name, costPrice, normalPrice, valePrice, preferentialPrice } = state.productForm;
+            if (!name || !costPrice || !normalPrice || !valePrice || !preferentialPrice) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
+
+            const newProduct = {
+                id: Date.now(),
+                name,
+                costPrice: parseFloat(costPrice),
+                normalPrice: parseFloat(normalPrice),
+                valePrice: parseFloat(valePrice),
+                preferentialPrice: parseFloat(preferentialPrice)
+            };
+
+            state.products.push(newProduct);
+            saveProducts();
+            state.productForm = { name: '', costPrice: '', normalPrice: '', valePrice: '', preferentialPrice: '' };
+            state.showProductForm = false;
+            render();
+        }
+
+        function deleteProduct(id) {
+            if (confirm('¿Eliminar producto?')) {
+                state.products = state.products.filter(p => p.id !== id);
+                saveProducts();
+                render();
+            }
+        }
+
+        function editProduct(product) {
+            state.editingProduct = product;
+            state.productForm = {
+                name: product.name,
+                costPrice: product.costPrice.toString(),
+                normalPrice: product.normalPrice.toString(),
+                valePrice: product.valePrice.toString(),
+                preferentialPrice: product.preferentialPrice.toString()
+            };
+            state.showProductForm = true;
+            render();
+        }
+
+        function updateProduct() {
+            const { name, costPrice, normalPrice, valePrice, preferentialPrice } = state.productForm;
+            if (!name || !costPrice || !normalPrice || !valePrice || !preferentialPrice) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
+
+            state.products = state.products.map(p => 
+                p.id === state.editingProduct.id
+                    ? { ...p, name, costPrice: parseFloat(costPrice), normalPrice: parseFloat(normalPrice), valePrice: parseFloat(valePrice), preferentialPrice: parseFloat(preferentialPrice) }
+                    : p
+            );
+
+            saveProducts();
+            state.editingProduct = null;
+            state.productForm = { name: '', costPrice: '', normalPrice: '', valePrice: '', preferentialPrice: '' };
+            state.showProductForm = false;
+            render();
+        }
+
+        // Sale actions
+        function addSale() {
+            const { productId, quantity, priceType, date } = state.saleForm;
+            if (!productId || !quantity || !date) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
+
+            const product = state.products.find(p => p.id === parseInt(productId));
+            const qty = parseInt(quantity);
+
+            let salePrice, priceTypeLabel;
+            if (priceType === 'normal') {
+                salePrice = product.normalPrice;
+                priceTypeLabel = 'Normal';
+            } else if (priceType === 'vale') {
+                salePrice = product.valePrice;
+                priceTypeLabel = 'Vales';
+            } else {
+                salePrice = product.preferentialPrice;
+                priceTypeLabel = 'Preferencial';
+            }
+
+            const newSale = {
+                id: Date.now(),
+                productId: product.id,
+                productName: product.name,
+                quantity: qty,
+                costPrice: product.costPrice,
+                salePrice,
+                priceType,
+                priceTypeLabel,
+                totalCost: product.costPrice * qty,
+                totalSale: salePrice * qty,
+                profit: (salePrice - product.costPrice) * qty,
+                date
+            };
+
+            state.sales.push(newSale);
+            saveSales();
+            state.saleForm = { productId: '', quantity: '', priceType: 'normal', date: new Date().toISOString().split('T')[0] };
+            state.showSaleForm = false;
+            render();
+        }
+
+        function deleteSale(id) {
+            if (confirm('¿Eliminar venta?')) {
+                state.sales = state.sales.filter(s => s.id !== id);
+                saveSales();
+                render();
+            }
+        }
+
+        // Expense actions
+        function addExpense() {
+            const { type, amount, description, date } = state.expenseForm;
+            if (!amount || !date) {
+                alert('Por favor completa los campos requeridos');
+                return;
+            }
+
+            const expenseLabels = {
+                truck_rent: 'Arriendo de Camión',
+                fuel: 'Combustible',
+                other: 'Otro'
+            };
+
+            const newExpense = {
+                id: Date.now(),
+                type,
+                typeLabel: expenseLabels[type],
+                amount: parseFloat(amount),
+                description,
+                date
+            };
+
+            state.expenses.push(newExpense);
+            saveExpenses();
+            state.expenseForm = { type: 'truck_rent', amount: '', description: '', date: new Date().toISOString().split('T')[0] };
+            state.showExpenseForm = false;
+            render();
+        }
+
+        function deleteExpense(id) {
+            if (confirm('¿Eliminar gasto?')) {
+                state.expenses = state.expenses.filter(e => e.id !== id);
+                saveExpenses();
+                render();
+            }
+        }
+
+        // Render
+        function render() {
+            const totals = calculateTotals();
+            const profitByType = calculateProfitByType();
+            const filteredSales = getFilteredSales();
+            const filteredExpenses = getFilteredExpenses();
+
+            document.getElementById('app').innerHTML = `
+                <div class="header">
+                    <h1>💰 Gestor de Ventas y Gastos</h1>
+                    <p class="subtitle">Administra productos, ventas y gastos operativos</p>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">📅 Período de Vista</h2>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn ${state.viewPeriod === 'day' ? 'btn-primary' : 'btn-secondary'}" 
+                                onclick="state.viewPeriod='day'; state.selectedDate=new Date().toISOString().split('T')[0]; render()">Hoy</button>
+                        <button class="btn ${state.viewPeriod === 'week' ? 'btn-primary' : 'btn-secondary'}" 
+                                onclick="state.viewPeriod='week'; render()">Última Semana</button>
+                        <button class="btn ${state.viewPeriod === 'month' ? 'btn-primary' : 'btn-secondary'}" 
+                                onclick="state.viewPeriod='month'; render()">Este Mes</button>
+                        <button class="btn ${state.viewPeriod === 'custom' ? 'btn-primary' : 'btn-secondary'}" 
+                                onclick="state.viewPeriod='custom'; render()">Rango Personalizado</button>
+                    </div>
+                    ${state.viewPeriod === 'day' ? `
+                        <div style="margin-top: 16px;">
+                            <label class="text-sm" style="display:block; margin-bottom:8px; font-weight:500;">Seleccionar fecha:</label>
+                            <input type="date" class="input" value="${state.selectedDate}" 
+                                   onchange="state.selectedDate=this.value; render()" style="max-width: 200px;">
+                        </div>
+                    ` : ''}
+                    ${state.viewPeriod === 'custom' ? `
+                        <div style="margin-top: 16px; display: flex; gap: 16px;">
+                            <div>
+                                <label class="text-sm" style="display:block; margin-bottom:8px; font-weight:500;">Desde:</label>
+                                <input type="date" class="input" value="${state.startDate}" 
+                                       onchange="state.startDate=this.value; render()" style="max-width: 200px;">
+                            </div>
+                            <div>
+                                <label class="text-sm" style="display:block; margin-bottom:8px; font-weight:500;">Hasta:</label>
+                                <input type="date" class="input" value="${state.endDate}" 
+                                       onchange="state.endDate=this.value; render()" style="max-width: 200px;">
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Ventas Totales <span>📈</span></div>
+                        <div class="stat-value" style="color: #3B82F6;">$${(totals.totalSales || 0).toLocaleString('es-CL')}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Ganancia Bruta <span>💰</span></div>
+                        <div class="stat-value" style="color: #10B981;">$${(totals.totalProfit || 0).toLocaleString('es-CL')}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Gastos <span>🚚</span></div>
+                        <div class="stat-value" style="color: #EF4444;">$${(totals.totalExpenses || 0).toLocaleString('es-CL')}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Ganancia Neta <span>✨</span></div>
+                        <div class="stat-value" style="color: #8B5CF6;">$${(totals.netProfit || 0).toLocaleString('es-CL')}</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title" style="margin-bottom: 16px;">Ganancias por Tipo de Cliente</h3>
+                    <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
+                        <div class="stat-card" style="background: #DBEAFE; border: 2px solid #3B82F6;">
+                            <div class="stat-label" style="color: #1E40AF;">👥 Normal</div>
+                            <div class="stat-value" style="color: #2563EB;">${(profitByType.normal || 0).toLocaleString('es-CL')}</div>
+                        </div>
+                        <div class="stat-card" style="background: #F3E8FF; border: 2px solid #A855F7;">
+                            <div class="stat-label" style="color: #7C3AED;">💳 Vales</div>
+                            <div class="stat-value" style="color: #9333EA;">${(profitByType.vale || 0).toLocaleString('es-CL')}</div>
+                        </div>
+                        <div class="stat-card" style="background: #D1FAE5; border: 2px solid #10B981;">
+                            <div class="stat-label" style="color: #047857;">⭐ Preferencial</div>
+                            <div class="stat-value" style="color: #059669;">${(profitByType.preferential || 0).toLocaleString('es-CL')}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-3">
+                    <!-- PRODUCTOS -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h3 class="section-title">📦 Productos</h3>
+                            <button class="btn btn-primary" onclick="state.showProductForm=!state.showProductForm; state.editingProduct=null; state.productForm={name:'',costPrice:'',normalPrice:'',valePrice:'',preferentialPrice:''}; render()">
+                                ➕ Agregar
+                            </button>
+                        </div>
+                        
+                        ${state.showProductForm ? `
+                            <div class="form" style="border: 2px solid #4F46E5;">
+                                <input type="text" class="input" placeholder="Nombre del producto" value="${state.productForm.name}"
+                                       oninput="state.productForm.name=this.value">
+                                <input type="number" class="input" placeholder="Precio de compra (costo)" value="${state.productForm.costPrice}"
+                                       oninput="state.productForm.costPrice=this.value" step="0.01">
+                                
+                                <div style="background: #DBEAFE; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+                                    <label style="font-size: 12px; font-weight: 600; color: #1E40AF; display: block; margin-bottom: 4px;">Precio Normal</label>
+                                    <input type="number" class="input" placeholder="Ej: 3000" value="${state.productForm.normalPrice}"
+                                           oninput="state.productForm.normalPrice=this.value" step="0.01" style="margin-bottom: 0;">
+                                </div>
+                                
+                                <div style="background: #F3E8FF; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+                                    <label style="font-size: 12px; font-weight: 600; color: #7C3AED; display: block; margin-bottom: 4px;">Precio Vales</label>
+                                    <input type="number" class="input" placeholder="Ej: 2450" value="${state.productForm.valePrice}"
+                                           oninput="state.productForm.valePrice=this.value" step="0.01" style="margin-bottom: 0;">
+                                </div>
+                                
+                                <div style="background: #D1FAE5; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+                                    <label style="font-size: 12px; font-weight: 600; color: #047857; display: block; margin-bottom: 4px;">Precio Preferencial</label>
+                                    <input type="number" class="input" placeholder="Ej: 2000" value="${state.productForm.preferentialPrice}"
+                                           oninput="state.productForm.preferentialPrice=this.value" step="0.01" style="margin-bottom: 0;">
+                                </div>
+                                
+                                <div class="btn-group">
+                                    <button class="btn btn-success" onclick="${state.editingProduct ? 'updateProduct()' : 'addProduct()'}" style="flex: 1;">
+                                        ${state.editingProduct ? 'Actualizar' : 'Guardar'}
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="state.showProductForm=false; state.editingProduct=null; render()">
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </div>
+                        ` : ''}
+                        
+                        <div class="list">
+                            ${state.products.map(p => `
+                                <div class="list-item" style="background: #F9FAFB; border-color: #D1D5DB;">
+                                    <div class="flex-between mb-2">
+                                        <strong>${p.name}</strong>
+                                        <div style="display: flex; gap: 8px;">
+                                            <button onclick="editProduct(${JSON.stringify(p).replace(/"/g, '&quot;')})" style="background: none; border: none; cursor: pointer; color: #3B82F6;">✏️</button>
+                                            <button onclick="deleteProduct(${p.id})" style="background: none; border: none; cursor: pointer; color: #EF4444;">🗑️</button>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs" style="color: #6B7280; margin-bottom: 8px;">Costo: ${p.costPrice.toLocaleString('es-CL')}</p>
+                                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; font-size: 11px;">
+                                        <div style="background: #DBEAFE; padding: 8px; border-radius: 4px; text-align: center;">
+                                            <div style="font-weight: 600; color: #1E40AF;">Normal</div>
+                                            <div style="color: #2563EB;">${p.normalPrice.toLocaleString('es-CL')}</div>
+                                        </div>
+                                        <div style="background: #F3E8FF; padding: 8px; border-radius: 4px; text-align: center;">
+                                            <div style="font-weight: 600; color: #7C3AED;">Vales</div>
+                                            <div style="color: #9333EA;">${p.valePrice.toLocaleString('es-CL')}</div>
+                                        </div>
+                                        <div style="background: #D1FAE5; padding: 8px; border-radius: 4px; text-align: center;">
+                                            <div style="font-weight: 600; color: #047857;">Prefer.</div>
+                                            <div style="color: #059669;">${p.preferentialPrice.toLocaleString('es-CL')}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- VENTAS -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h3 class="section-title">💵 Ventas</h3>
+                            <button class="btn btn-success" onclick="state.showSaleForm=!state.showSaleForm; render()">
+                                ➕ Nueva
+                            </button>
+                        </div>
+                        
+                        ${state.showSaleForm ? `
+                            <div class="form" style="border: 2px solid #10B981;">
+                                <select class="input" onchange="state.saleForm.productId=this.value">
+                                    <option value="">Seleccionar producto</option>
+                                    ${state.products.map(p => `
+                                        <option value="${p.id}" ${state.saleForm.productId == p.id ? 'selected' : ''}>${p.name}</option>
+                                    `).join('')}
+                                </select>
+                                
+                                <select class="input" onchange="state.saleForm.priceType=this.value">
+                                    <option value="normal" ${state.saleForm.priceType === 'normal' ? 'selected' : ''}>💰 Precio Normal</option>
+                                    <option value="vale" ${state.saleForm.priceType === 'vale' ? 'selected' : ''}>💳 Vales</option>
+                                    <option value="preferential" ${state.saleForm.priceType === 'preferential' ? 'selected' : ''}>⭐ Precio Preferencial</option>
+                                </select>
+                                
+                                <input type="number" class="input" placeholder="Cantidad" value="${state.saleForm.quantity}"
+                                       oninput="state.saleForm.quantity=this.value">
+                                <input type="date" class="input" value="${state.saleForm.date}"
+                                       onchange="state.saleForm.date=this.value">
+                                
+                                <div class="btn-group">
+                                    <button class="btn btn-success" onclick="addSale()" style="flex: 1;">Registrar</button>
+                                    <button class="btn btn-secondary" onclick="state.showSaleForm=false; render()">Cancelar</button>
+                                </div>
+                            </div>
+                        ` : ''}
+                        
+                        <div class="list">
+                            ${filteredSales.map(s => {
+                                const bgColor = s.priceType === 'normal' ? '#DBEAFE' : s.priceType === 'vale' ? '#F3E8FF' : '#D1FAE5';
+                                const borderColor = s.priceType === 'normal' ? '#3B82F6' : s.priceType === 'vale' ? '#A855F7' : '#10B981';
+                                const badgeBg = s.priceType === 'normal' ? '#BFDBFE' : s.priceType === 'vale' ? '#E9D5FF' : '#A7F3D0';
+                                const badgeText = s.priceType === 'normal' ? '#1E40AF' : s.priceType === 'vale' ? '#6B21A8' : '#065F46';
+                                
+                                return `
+                                    <div class="list-item" style="background: ${bgColor}; border-color: ${borderColor};">
+                                        <div class="flex-between mb-2">
+                                            <div>
+                                                <strong class="text-sm">${s.productName}</strong><br>
+                                                <span class="badge" style="background: ${badgeBg}; color: ${badgeText}; margin-top: 4px;">${s.priceTypeLabel}</span>
+                                            </div>
+                                            <button onclick="deleteSale(${s.id})" style="background: none; border: none; cursor: pointer; color: #EF4444;">🗑️</button>
+                                        </div>
+                                        <p class="text-xs" style="color: #374151;">Cant: ${s.quantity} | Venta: ${s.totalSale.toLocaleString('es-CL')}</p>
+                                        <p class="text-xs" style="color: #059669; font-weight: 600;">Ganancia: ${s.profit.toLocaleString('es-CL')}</p>
+                                        <p class="text-xs" style="color: #6B7280; margin-top: 4px;">${s.date}</p>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+
+                    <!-- GASTOS -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h3 class="section-title">📝 Gastos</h3>
+                            <button class="btn btn-danger" onclick="state.showExpenseForm=!state.showExpenseForm; render()">
+                                ➕ Agregar
+                            </button>
+                        </div>
+                        
+                        ${state.showExpenseForm ? `
+                            <div class="form" style="border: 2px solid #EF4444;">
+                                <select class="input" onchange="state.expenseForm.type=this.value">
+                                    <option value="truck_rent" ${state.expenseForm.type === 'truck_rent' ? 'selected' : ''}>🚚 Arriendo de Camión</option>
+                                    <option value="fuel" ${state.expenseForm.type === 'fuel' ? 'selected' : ''}>⛽ Combustible</option>
+                                    <option value="other" ${state.expenseForm.type === 'other' ? 'selected' : ''}>📝 Otro</option>
+                                </select>
+                                
+                                <input type="number" class="input" placeholder="Monto del gasto" value="${state.expenseForm.amount}"
+                                       oninput="state.expenseForm.amount=this.value" step="0.01">
+                                
+                                <input type="text" class="input" placeholder="Descripción (opcional)" value="${state.expenseForm.description}"
+                                       oninput="state.expenseForm.description=this.value">
+                                
+                                <input type="date" class="input" value="${state.expenseForm.date}"
+                                       onchange="state.expenseForm.date=this.value">
+                                
+                                <div class="btn-group">
+                                    <button class="btn btn-danger" onclick="addExpense()" style="flex: 1;">Guardar</button>
+                                    <button class="btn btn-secondary" onclick="state.showExpenseForm=false; render()">Cancelar</button>
+                                </div>
+                            </div>
+                        ` : ''}
+                        
+                        <div class="list">
+                            ${filteredExpenses.map(e => `
+                                <div class="list-item" style="background: #FEE2E2; border-color: #EF4444;">
+                                    <div class="flex-between mb-2">
+                                        <div>
+                                            <strong>${e.typeLabel}</strong>
+                                            ${e.description ? `<p class="text-xs" style="color: #6B7280;">${e.description}</p>` : ''}
+                                        </div>
+                                        <button onclick="deleteExpense(${e.id})" style="background: none; border: none; cursor: pointer; color: #EF4444;">🗑️</button>
+                                    </div>
+                                    <p style="font-size: 18px; font-weight: 700; color: #DC2626;">${e.amount.toLocaleString('es-CL')}</p>
+                                    <p class="text-xs" style="color: #6B7280; margin-top: 4px;">${e.date}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initialize
+        loadData();
+        render();
+    </script>
+</body>
+</html>
